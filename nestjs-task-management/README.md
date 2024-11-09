@@ -45,28 +45,246 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Documentation
+## Base URL API
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+http://localhost:3000/
 ```
 
-## Support
+## Table Endpoints
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Customer
 
-## Stay in touch
+| Name                | Endpoint                          | Method   | Bearer token | Body and response                     |
+|---------------------|-----------------------------------|----------|--------------|---------------------------------------|
+| Sign Up             | `auth/signup`                     | `POST`   | No           | [example](#sign-up---post)            |
+| Sign In             | `auth/signin`                     | `POST`   | No           | [example](#sign-in---post)            |
+| Create Task         | `tasks`                           | `POST`   | Yes          | [example](#create-task---post)        |
+| Update Task         | `tasks/:id/status`                | `PATCH`  | Yes          | [example](#update-task---patch)       |
+| Delete Task         | `tasks/:id`                       | `DELETE` | Yes          | [example](#delete-task---delete)      |
+| Get All Task        | `tasks`                           | `GET`    | Yes          | [example](#get-all-tasks---get)       |
+| Get Task by Id      | `tasks/:id`                       | `GET`    | Yes          | [example](#get-task-by-id---get)      |
+| Get Task by Filters | `tasks?status=OPEN&search=basket` | `GET`    | Yes          | [example](#get-task-by-filters---get) |
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Sign Up - POST
+
+```
+POST auth/signup
+```
+
+Body
+
+```json
+{
+  "username": "irwan",
+  "password": "@Irwan23"
+}
+```
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "createUser successfully",
+  "data": null
+}
+```
+
+### Sign In - POST
+
+```
+POST auth/signin
+```
+
+Body
+
+```json
+{
+  "username": "irwan",
+  "password": "@Irwan23"
+}
+```
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "signIn successfully",
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.[...]"
+  }
+}
+```
+
+### Create Task - POST
+
+```
+POST tasks
+```
+
+Body
+
+```json
+{
+  "title": "play basket",
+  "description": "playing basketball is cool"
+}
+```
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "Tasks created successfully",
+  "data": {
+    "title": "play basket",
+    "description": "playing basketball is cool",
+    "status": "OPEN",
+    "id": "1c5048bf-22a8-42c5-946a-4504069d7079"
+  }
+}
+```
+
+### Update Task - PATCH
+
+```
+PATCH tasks/:id/status
+```
+
+Body
+
+```json
+{
+  "status": "IN_PROGRESS"
+}
+```
+
+IN_PROGRESS, OPEN or DONE
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "Tasks updated successfully",
+  "data": {
+    "id": "1c5048bf-22a8-42c5-946a-4504069d7079",
+    "title": "play basket",
+    "description": "playing basketball is cool",
+    "status": "IN_PROGRESS"
+  }
+}
+
+```
+
+### Delete Task - DELETE
+
+```
+DELETE tasks/:id
+```
+
+Params
+
+param task id
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "Tasks deleted successfully",
+  "data": null
+}
+```
+
+### Get All Tasks - GET
+
+```
+GET tasks
+```
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "Tasks retrieved successfully",
+  "data": [
+    {
+      "id": "d804d9b3-0da2-4dae-9b4b-c5bbd9e14399",
+      "title": "play guitar",
+      "description": "playing guitar is cool",
+      "status": "OPEN"
+    },
+    {
+      "id": "250bb754-910e-4e1f-a4c3-21752a914da5",
+      "title": "play basket",
+      "description": "playing basketball is cool",
+      "status": "OPEN"
+    }
+  ]
+}
+```
+
+### Get Task by Id - GET
+
+```
+GET tasks/:id
+```
+
+Params
+
+param task id
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "Tasks created successfully",
+  "data": {
+    "title": "play basket",
+    "description": "playing basketball is cool",
+    "status": "OPEN",
+    "id": "250bb754-910e-4e1f-a4c3-21752a914da5"
+  }
+}
+
+```
+
+### Get Task by Filters - GET
+
+```
+GET tasks/:id
+```
+
+Query
+
+status (OPEN, IN_PROGRESS, DONE)
+
+search (search by title or description)
+
+Response
+
+```json
+{
+  "statusCode": 200,
+  "message": "Tasks retrieved successfully",
+  "data": [
+    {
+      "id": "250bb754-910e-4e1f-a4c3-21752a914da5",
+      "title": "play basket",
+      "description": "playing basketball is cool",
+      "status": "OPEN"
+    }
+  ]
+}
+
+```
 
 ## License
 
